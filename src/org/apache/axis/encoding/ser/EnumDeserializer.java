@@ -38,18 +38,23 @@ public class EnumDeserializer extends SimpleDeserializer {
         super(javaType, xmlType);
     }
 
-    public Object makeValue(String source) throws Exception
-    {
-        // Invoke the fromString static method to get the Enumeration value
-        if (isNil)
-            return null;
-        if (fromStringMethod == null) {
-            try {
-                fromStringMethod = MethodCache.getInstance().getMethod(javaType, "fromString", STRING_CLASS);
-            } catch (Exception e) {
-                throw new IntrospectionException(e.toString());
+    public Object makeValue(String source) throws Exception {
+    	try {
+            // Invoke the fromString static method to get the Enumeration value
+            if (isNil)
+                return null;
+           
+            if (fromStringMethod == null) {
+                try {
+                    fromStringMethod = MethodCache.getInstance().getMethod(javaType, "fromString", STRING_CLASS);
+                } catch (Exception e) {
+                    throw new IntrospectionException(e.toString());
+                }
             }
+            
+            return fromStringMethod.invoke(null,new Object [] { source });
+        } catch (Exception e) {
+            return null;
         }
-        return fromStringMethod.invoke(null,new Object [] { source });
     }
 }
