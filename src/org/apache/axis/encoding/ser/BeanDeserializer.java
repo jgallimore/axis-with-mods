@@ -252,12 +252,13 @@ public class BeanDeserializer extends DeserializerImpl implements Serializable
             }
         }
 
-
         if (propDesc == null) {
-            // No such field
-            throw new SAXException(
-                    Messages.getMessage("badElem00", javaType.getName(), 
-                                         localName));
+        	//@TODO: No such field. Throwing exception here makes code not backwards compatible.
+        	//log.warn("No such field in client code: " + javaType.getName() + "/" + localName);
+        	// throw new SAXException(
+        	// Messages.getMessage("badElem00", javaType.getName(),
+        	// localName));
+        	return null;
         }
 
         prevQName = elemQName;
